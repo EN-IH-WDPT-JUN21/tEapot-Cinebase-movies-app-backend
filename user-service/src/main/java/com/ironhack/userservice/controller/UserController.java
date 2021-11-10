@@ -1,5 +1,6 @@
 package com.ironhack.userservice.controller;
 
+import com.ironhack.userservice.dto.UpdateRequest;
 import com.ironhack.userservice.dto.UserDTO;
 import com.ironhack.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins="http://localhost:4200")
 public class UserController {
     @Autowired
     UserService userService;
@@ -24,6 +26,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getById(@PathVariable("id") Long id) {
         return userService.getById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public void updateUser(@PathVariable("id") Long id, @RequestBody UpdateRequest updateRequest){
+        userService.updateUser(id, updateRequest);
     }
 
     @PostMapping

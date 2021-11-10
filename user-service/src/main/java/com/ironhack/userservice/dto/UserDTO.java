@@ -26,4 +26,10 @@ public class UserDTO {
         this.password = password;
         this.imageUrl = imageUrl;
     }
+
+    public UserDTO(String imageUrl, String bio, List<Long> playlists) {
+        this.imageUrl = imageUrl;
+        this.bio = bio;
+        this.playlists = playlists;
+    }
 }

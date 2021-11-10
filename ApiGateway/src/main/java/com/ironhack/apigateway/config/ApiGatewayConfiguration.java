@@ -15,7 +15,11 @@ public class ApiGatewayConfiguration {
         return builder.routes()
                 .route(p -> p.path("/api/playlist/**")
                         .uri("lb://PLAYLIST-SERVICE"))
+                .route(p -> p.path("/api/playlist**")
+                        .uri("lb://PLAYLIST-SERVICE"))
                 .route(p -> p.path("/api/user/**")
+                        .uri("lb://USER-SERVICE"))
+                .route(p -> p.path("/api/user**")
                         .uri("lb://USER-SERVICE"))
                 .build();
     }

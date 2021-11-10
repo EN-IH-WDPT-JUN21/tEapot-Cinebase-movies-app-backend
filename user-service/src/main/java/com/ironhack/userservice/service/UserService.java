@@ -1,6 +1,7 @@
 package com.ironhack.userservice.service;
 
 import com.ironhack.userservice.dao.User;
+import com.ironhack.userservice.dto.UpdateRequest;
 import com.ironhack.userservice.dto.UserDTO;
 import com.ironhack.userservice.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,22 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return getUser(user.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with id " + id);
+        }
+    }
+
+    public void updateUser(Long id, UpdateRequest updateRequest){
+        var user = userRepository.findById(id);
+        if(user.isPresent()){
+            if(updateRequest.getPlaylistId()!= null){
+                user.get().getPlaylists().add(updateRequest.getPlaylistId());
+            } if(updateRequest.getImageUrl()!= null){
+                user.get().setImageUrl(updateRequest.getImageUrl());
+            } if(updateRequest.getBio()!= null){
+                user.get().setBio(updateRequest.getBio());
+            }
+            userRepository.save(user.get());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with id " + id);
         }

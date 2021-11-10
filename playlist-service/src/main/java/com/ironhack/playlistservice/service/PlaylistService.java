@@ -1,6 +1,7 @@
 package com.ironhack.playlistservice.service;
 
 import com.ironhack.playlistservice.dao.Playlist;
+import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,42 @@ public class PlaylistService {
         }
     }
 
+    public List<PlaylistDTO> getByUserId(Long userId) {
+        List<PlaylistDTO> playlistDTOS = new ArrayList<>();
+        var playlists = playlistRepository.findByUserId(userId);
+        for (Playlist playlist : playlists) {
+            PlaylistDTO playlistDTO = getPlaylist(playlist);
+            playlistDTOS.add(playlistDTO);
+        }
+        return playlistDTOS;
+    }
+
     public void deletePlaylist(Long id) {
         playlistRepository.deleteById(id);
     }
 
     public void createPlaylist(PlaylistDTO playlistDTO) {
         playlistRepository.save(dtoToDao(playlistDTO));
+    }
+
+    public void updatePlaylist(Long id, MovieDTO movieDTO){
+        var playlist = playlistRepository.findById(id);
+        if(playlist.isPresent()){
+            playlist.get().getMovies().add(movieDTO);
+            playlistRepository.save(playlist.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
+        }
+    }
+
+    public void deleteMovie(Long id, MovieDTO movieDTO){
+        var playlist = playlistRepository.findById(id);
+        if(playlist.isPresent()){
+            playlist.get().getMovies().remove(movieDTO);
+            playlistRepository.save(playlist.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
+        }
     }
 
     public PlaylistDTO getPlaylist(Playlist playlist) {
