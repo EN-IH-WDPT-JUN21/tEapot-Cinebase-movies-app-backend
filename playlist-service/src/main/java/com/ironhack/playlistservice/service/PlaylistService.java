@@ -62,8 +62,13 @@ public class PlaylistService {
     public void updatePlaylist(Long id, MovieDTO movieDTO){
         var playlist = playlistRepository.findById(id);
         if(playlist.isPresent()){
-            playlist.get().getMovies().add(movieDTO);
-            playlistRepository.save(playlist.get());
+            var movies = playlist.get().getMovies();
+            if(!movies.contains(movieDTO) && movies.size()<10) {
+                playlist.get().getMovies().add(movieDTO);
+                playlistRepository.save(playlist.get());
+            } else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Requirements not met");
+            }
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
         }
@@ -71,7 +76,7 @@ public class PlaylistService {
 
     public void deleteMovie(Long id, MovieDTO movieDTO){
         var playlist = playlistRepository.findById(id);
-        if(playlist.isPresent()){
+        if(playlist.isPresent() && playlist.get().getMovies().contains(movieDTO)){
             playlist.get().getMovies().remove(movieDTO);
             playlistRepository.save(playlist.get());
         } else {
