@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -25,6 +24,9 @@ public class User {
     private String password;
     private String imageUrl;
     private String bio;
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Long> playlists;
 
     public User(String username, String password) {

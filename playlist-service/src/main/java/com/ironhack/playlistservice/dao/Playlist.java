@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -24,6 +23,9 @@ public class Playlist {
 
     private Long userId;
     private String name;
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<MovieDTO> movies;
 
     public Playlist(Long userId, String name, List<MovieDTO> movies) {

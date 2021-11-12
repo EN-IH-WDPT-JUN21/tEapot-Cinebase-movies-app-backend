@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.ElementCollection;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,5 +23,10 @@ public class PlaylistDTO {
         this.userId = userId;
         this.name = name;
         this.movies = movies;
+    }
+    public PlaylistDTO(Long id, Long userId, String name) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
     }
 }
