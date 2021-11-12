@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class PlaylistController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PlaylistDTO> getAllPlaylists() {
+    public List<PlaylistDTO> getAllPlaylists(Principal principle) {
         return playlistService.getAllPlaylists();
     }
 

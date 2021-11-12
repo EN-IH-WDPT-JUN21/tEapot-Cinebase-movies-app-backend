@@ -28,6 +28,12 @@ public class UserController {
         return userService.getById(id);
     }
 
+    @GetMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO getByUsername(@PathVariable("username") String username) {
+        return userService.getByUsername(username);
+    }
+
     @PatchMapping("/{id}")
     public void updateUser(@PathVariable("id") Long id, @RequestBody UpdateRequest updateRequest){
         userService.updateUser(id, updateRequest);

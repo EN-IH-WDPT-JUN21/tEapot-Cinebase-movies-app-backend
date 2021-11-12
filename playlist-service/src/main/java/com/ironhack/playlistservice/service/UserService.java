@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,15 @@ public class UserService {
             return getUser(user.get());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with id " + id);
+        }
+    }
+
+    public UserDTO getByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return getUser(user.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with username " + username);
         }
     }
 
