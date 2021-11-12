@@ -1,35 +1,34 @@
-package com.ironhack.userservice.dto;
+package com.ironhack.playlistservice.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.List;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDTO {
-
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String password;
     private String imageUrl;
     private String bio;
     private List<Long> playlists;
 
-    public UserDTO(Long id, String username, String password, String imageUrl) {
-        this.id = id;
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.imageUrl = imageUrl;
-    }
-
-    public UserDTO(String imageUrl, String bio, List<Long> playlists) {
-        this.imageUrl = imageUrl;
-        this.bio = bio;
-        this.playlists = playlists;
     }
 }

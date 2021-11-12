@@ -1,6 +1,6 @@
-package com.ironhack.userservice.repository;
+package com.ironhack.playlistservice.repository;
 
-import com.ironhack.userservice.dao.User;
+import com.ironhack.playlistservice.dao.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

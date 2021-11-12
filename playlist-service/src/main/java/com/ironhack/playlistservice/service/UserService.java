@@ -1,9 +1,9 @@
-package com.ironhack.userservice.service;
+package com.ironhack.playlistservice.service;
 
-import com.ironhack.userservice.dao.User;
-import com.ironhack.userservice.dto.UpdateRequest;
-import com.ironhack.userservice.dto.UserDTO;
-import com.ironhack.userservice.repository.UserRepository;
+import com.ironhack.playlistservice.dao.User;
+import com.ironhack.playlistservice.dto.UpdateRequest;
+import com.ironhack.playlistservice.dto.UserDTO;
+import com.ironhack.playlistservice.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

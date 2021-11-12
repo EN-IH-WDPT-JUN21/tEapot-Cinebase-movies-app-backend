@@ -1,11 +1,9 @@
-package com.ironhack.userservice.dto;
+package com.ironhack.playlistservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

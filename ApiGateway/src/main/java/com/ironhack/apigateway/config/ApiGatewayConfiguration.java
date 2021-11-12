@@ -18,9 +18,9 @@ public class ApiGatewayConfiguration {
                 .route(p -> p.path("/api/playlist**")
                         .uri("lb://PLAYLIST-SERVICE"))
                 .route(p -> p.path("/api/user/**")
-                        .uri("lb://USER-SERVICE"))
+                        .uri("lb://PLAYLIST-SERVICE"))
                 .route(p -> p.path("/api/user**")
-                        .uri("lb://USER-SERVICE"))
+                        .uri("lb://PLAYLIST-SERVICE"))
                 .build();
     }
 }

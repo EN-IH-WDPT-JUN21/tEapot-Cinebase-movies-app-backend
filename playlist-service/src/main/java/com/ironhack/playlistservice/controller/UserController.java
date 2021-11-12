@@ -1,8 +1,8 @@
-package com.ironhack.userservice.controller;
+package com.ironhack.playlistservice.controller;
 
-import com.ironhack.userservice.dto.UpdateRequest;
-import com.ironhack.userservice.dto.UserDTO;
-import com.ironhack.userservice.service.UserService;
+import com.ironhack.playlistservice.dto.UpdateRequest;
+import com.ironhack.playlistservice.dto.UserDTO;
+import com.ironhack.playlistservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
