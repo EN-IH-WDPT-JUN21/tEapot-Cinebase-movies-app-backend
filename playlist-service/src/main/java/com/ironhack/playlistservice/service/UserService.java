@@ -54,9 +54,11 @@ public class UserService {
         if(user.isPresent()){
             if(updateRequest.getPlaylistId()!= null){
                 user.get().getPlaylists().add(updateRequest.getPlaylistId());
-            } if(updateRequest.getImageUrl()!= null){
+            }
+            if(updateRequest.getImageUrl()!= null){
                 user.get().setImageUrl(updateRequest.getImageUrl());
-            } if(updateRequest.getBio()!= null){
+            }
+            if(updateRequest.getBio()!= null){
                 user.get().setBio(updateRequest.getBio());
             }
             userRepository.save(user.get());

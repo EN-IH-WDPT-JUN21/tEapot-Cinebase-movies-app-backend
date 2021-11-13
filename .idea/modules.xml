@@ -4,9 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApiGateway/ApiGateway.iml" filepath="$PROJECT_DIR$/ApiGateway/ApiGateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/Discovery-Service/Server.iml" filepath="$PROJECT_DIR$/Discovery-Service/Server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/movie-backend.iml" filepath="$PROJECT_DIR$/.idea/movie-backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/playlist-service/playlist-service.iml" filepath="$PROJECT_DIR$/playlist-service/playlist-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tEapot-Cinebase-movies-app.iml" filepath="$PROJECT_DIR$/.idea/tEapot-Cinebase-movies-app.iml" />
     </modules>
   </component>
 </project>

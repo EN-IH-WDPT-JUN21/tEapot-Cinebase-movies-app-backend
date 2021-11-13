@@ -1,8 +1,10 @@
 package com.ironhack.playlistservice.service;
 
+import com.ironhack.playlistservice.dao.Movie;
 import com.ironhack.playlistservice.dao.Playlist;
 import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
+import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
+    private final MovieRepository movieRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository) {
         this.playlistRepository = playlistRepository;
+        this.movieRepository = movieRepository;
     }
 
     public List<PlaylistDTO> getAllPlaylists() {
@@ -61,14 +65,13 @@ public class PlaylistService {
 
     public void updatePlaylist(Long id, MovieDTO movieDTO){
         var playlist = playlistRepository.findById(id);
+        var movie = movieRepository.findByImdbId(movieDTO.getImdbId());
+        if(!movie.isPresent()){
+            movieRepository.save(movieToDao(movieDTO));
+        }
         if(playlist.isPresent()){
-            var movies = playlist.get().getMovies();
-            if(!movies.contains(movieDTO) && movies.size()<10) {
-                playlist.get().getMovies().add(movieDTO);
-                playlistRepository.save(playlist.get());
-            } else{
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Requirements not met");
-            }
+            playlist.get().addMovie(movieRepository.findByImdbId(movieDTO.getImdbId()).get());
+            playlistRepository.save(playlist.get());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
         }
@@ -76,8 +79,9 @@ public class PlaylistService {
 
     public void deleteMovie(Long id, MovieDTO movieDTO){
         var playlist = playlistRepository.findById(id);
-        if(playlist.isPresent() && playlist.get().getMovies().contains(movieDTO)){
-            playlist.get().getMovies().remove(movieDTO);
+        var movie = movieRepository.findByImdbId(movieDTO.getImdbId());
+        if(playlist.isPresent() && movie.isPresent()){
+            playlist.get().deleteMovie(movie.get());
             playlistRepository.save(playlist.get());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
@@ -89,7 +93,15 @@ public class PlaylistService {
         playlistDTO.setId(playlist.getId());
         playlistDTO.setName(playlist.getName());
         playlistDTO.setUserId(playlist.getUserId());
-        playlistDTO.setMovies(playlist.getMovies());
+
+        if(playlist.getMovies()!=null) {
+            List<MovieDTO> moviesDTO = new ArrayList<>();
+            var movies = playlist.getMovies();
+            for (Movie movie : movies) {
+                moviesDTO.add(movieToDto(movie));
+            }
+            playlistDTO.setMovies(moviesDTO);
+        }
         return playlistDTO;
     }
 
@@ -97,7 +109,29 @@ public class PlaylistService {
         Playlist playlist = new Playlist();
         playlist.setName(playlistDTO.getName());
         playlist.setUserId(playlistDTO.getUserId());
-        playlist.setMovies(playlistDTO.getMovies());
+
+        if(playlistDTO.getMovies()!=null) {
+            List<Movie> movies = new ArrayList<>();
+            var moviesDTO = playlistDTO.getMovies();
+            for (MovieDTO movieDTO : moviesDTO) {
+                movies.add(movieToDao(movieDTO));
+            }
+            playlist.setMovies(movies);
+        }
         return playlist;
+    }
+
+    public Movie movieToDao(MovieDTO movieDTO) {
+        Movie movie = new Movie();
+        movie.setTitle(movieDTO.getTitle());
+        movie.setImdbId(movieDTO.getImdbId());
+        return movie;
+    }
+
+    public MovieDTO movieToDto(Movie movie) {
+        MovieDTO movieDTO = new MovieDTO();
+        movieDTO.setTitle(movie.getTitle());
+        movieDTO.setImdbId(movieDTO.getImdbId());
+        return movieDTO;
     }
 }

@@ -32,7 +32,7 @@ public class PlaylistController {
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<PlaylistDTO> getByUserId(@RequestParam Long userId) {
+    public List<PlaylistDTO> getByUserId(@RequestParam (value="userid") Long userId) {
         return playlistService.getByUserId(userId);
     }
 

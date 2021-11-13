@@ -29,4 +29,9 @@ public class PlaylistDTO {
         this.userId = userId;
         this.name = name;
     }
+
+    public PlaylistDTO(Long userId, String name) {
+        this.userId = userId;
+        this.name = name;
+    }
 }

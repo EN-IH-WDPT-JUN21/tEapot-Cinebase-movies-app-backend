@@ -28,9 +28,9 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getByUsername(@PathVariable("username") String username) {
+    public UserDTO getByUsername(@RequestParam(value="name") String username) {
         return userService.getByUsername(username);
     }
 
