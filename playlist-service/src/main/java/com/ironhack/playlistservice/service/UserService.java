@@ -75,6 +75,8 @@ public class UserService {
         userRepository.save(dtoToDao(userDTO));
     }
 
+
+    //**** UTIL METHODS *****
     public UserDTO getUser(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());

@@ -88,6 +88,7 @@ public class PlaylistService {
         }
     }
 
+    //**** UTIL METHODS *****
     public PlaylistDTO getPlaylist(Playlist playlist) {
         PlaylistDTO playlistDTO = new PlaylistDTO();
         playlistDTO.setId(playlist.getId());

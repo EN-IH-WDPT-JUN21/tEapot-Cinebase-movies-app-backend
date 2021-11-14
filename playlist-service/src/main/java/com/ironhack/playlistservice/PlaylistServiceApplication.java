@@ -14,4 +14,5 @@ public class PlaylistServiceApplication {
 		SpringApplication.run(PlaylistServiceApplication.class, args);
 	}
 
+
 }

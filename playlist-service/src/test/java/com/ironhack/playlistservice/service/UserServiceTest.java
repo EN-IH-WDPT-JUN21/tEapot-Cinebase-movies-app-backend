@@ -74,9 +74,16 @@ class UserServiceTest {
 
     @Test
     void deleteUser() {
+        userService.deleteUser(user1.getId());
+
+        assertEquals(1, userRepository.findAll().size());
     }
 
     @Test
     void createUser() {
+        UserDTO userDTO = new UserDTO("laurapalmer", "pikachuuu");
+
+        userService.createUser(userDTO);
+        assertEquals(3, userRepository.findAll().size());
     }
 }
