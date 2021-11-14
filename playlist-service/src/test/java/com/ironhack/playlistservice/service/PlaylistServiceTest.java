@@ -9,9 +9,7 @@ import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.dto.UserDTO;
 import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlaylistServiceTest {
 
     @MockBean
@@ -65,18 +64,21 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Order(1)
     void getAllPlaylists() {
         List<PlaylistDTO> list = playlistService.getAllPlaylists();
         assertEquals(2, list.size());
     }
 
     @Test
+    @Order(1)
     void getById() {
         PlaylistDTO playlistDTO = playlistService.getById(playlist1.getId());
         assertEquals("My movies", playlistDTO.getName());
     }
 
     @Test
+    @Order(1)
     void getByUserId() {
         List<PlaylistDTO> list = playlistService.getByUserId(playlist1.getUserId());
         assertEquals(1, list.size());
@@ -84,6 +86,7 @@ class PlaylistServiceTest {
 
 
     @Test
+    @Order(1)
     void createPlaylist() {
         PlaylistDTO playlistDTO = new PlaylistDTO(1L, "awesome stuff");
 
@@ -92,6 +95,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Order(1)
     void updatePlaylist() {
         MovieDTO movieDTO=new MovieDTO();
         movieDTO.setImdbId("tt0110912");
@@ -103,6 +107,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Order(2)
     void deleteMovie() {
         MovieDTO movieDTO=new MovieDTO();
         movieDTO.setImdbId(movie1.getImdbId());
@@ -113,6 +118,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Order(3)
     void deletePlaylist() {
         playlistService.deletePlaylist(playlist1.getId());
 
