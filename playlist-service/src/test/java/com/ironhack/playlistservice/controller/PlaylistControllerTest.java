@@ -56,6 +56,12 @@ class PlaylistControllerTest {
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Autowired
+    private UserRepository userRepository;
+
+    User user1;
+    User user2;
+
     Playlist playlist1;
     Playlist playlist2;
     Movie movie1;
@@ -67,6 +73,9 @@ class PlaylistControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        user1 = new User("hellokitty", "htmlerror404");
+        user2 = new User("evilnamesake", "let!tbee");
+        userRepository.saveAll(List.of(user1, user2));
         movie1 = new Movie("tt1375666", "Inception");
         movie2 = new Movie("tt2382320", "No Time to Die");
         movie3 = new Movie("tt9764386", "30 Monedas");
@@ -74,8 +83,8 @@ class PlaylistControllerTest {
         movies1.add(movie1);
         movies1.add(movie2);
         movies2.add(movie3);
-        playlist1= new Playlist(1L, "My movies", movies1);
-        playlist2= new Playlist(2L, "My series", movies2);
+        playlist1= new Playlist(user1.getId(), "My movies", movies1);
+        playlist2= new Playlist(user2.getId(), "My series", movies2);
         playlistRepository.saveAll(List.of(playlist1, playlist2));
     }
 
@@ -83,6 +92,7 @@ class PlaylistControllerTest {
     void tearDown() {
         playlistRepository.deleteAll();
         movieRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -105,7 +115,7 @@ class PlaylistControllerTest {
     @Test
     void getByUserId() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("userid", "1");
+        params.add("userid", user1.getId().toString());
         MvcResult mvcResult = mockMvc.perform(
                 get("/api/playlist/user").queryParams(params))
                 .andReturn();
@@ -116,7 +126,7 @@ class PlaylistControllerTest {
 
     @Test
     void createPlaylist() throws Exception {
-        PlaylistDTO playlistDTO = new PlaylistDTO(1L, "awesome stuff");
+        PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
 
         String body = objectMapper.writeValueAsString(playlistDTO);
         MvcResult mvcResult = mockMvc.perform(

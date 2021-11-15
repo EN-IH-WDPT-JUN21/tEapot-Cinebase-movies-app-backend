@@ -52,9 +52,6 @@ public class UserService {
     public void updateUser(Long id, UpdateRequest updateRequest){
         var user = userRepository.findById(id);
         if(user.isPresent()){
-            if(updateRequest.getPlaylistId()!= null){
-                user.get().getPlaylists().add(updateRequest.getPlaylistId());
-            }
             if(updateRequest.getImageUrl()!= null){
                 user.get().setImageUrl(updateRequest.getImageUrl());
             }

@@ -4,11 +4,13 @@ import com.ironhack.playlistservice.PlaylistServiceApplication;
 import com.ironhack.playlistservice.controller.PlaylistController;
 import com.ironhack.playlistservice.dao.Movie;
 import com.ironhack.playlistservice.dao.Playlist;
+import com.ironhack.playlistservice.dao.User;
 import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.dto.UserDTO;
 import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
+import com.ironhack.playlistservice.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,11 @@ class PlaylistServiceTest {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    User user1;
+    User user2;
     Playlist playlist1;
     Playlist playlist2;
     Movie movie1;
@@ -45,6 +52,9 @@ class PlaylistServiceTest {
 
     @BeforeEach
     void setUp() {
+        user1 = new User("hellokitty", "htmlerror404");
+        user2 = new User("evilnamesake", "let!tbee");
+        userRepository.saveAll(List.of(user1, user2));
         movie1 = new Movie("tt1375666", "Inception");
         movie2 = new Movie("tt2382320", "No Time to Die");
         movie3 = new Movie("tt9764386", "30 Monedas");
@@ -52,8 +62,8 @@ class PlaylistServiceTest {
         movies1.add(movie1);
         movies1.add(movie2);
         movies2.add(movie3);
-        playlist1= new Playlist(1L, "My movies", movies1);
-        playlist2= new Playlist(2L, "My series", movies2);
+        playlist1= new Playlist(user1.getId(), "My movies", movies1);
+        playlist2= new Playlist(user2.getId(), "My series", movies2);
         playlistRepository.saveAll(List.of(playlist1, playlist2));
     }
 
@@ -61,6 +71,7 @@ class PlaylistServiceTest {
     void tearDown() {
         playlistRepository.deleteAll();
         movieRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -88,7 +99,7 @@ class PlaylistServiceTest {
     @Test
     @Order(1)
     void createPlaylist() {
-        PlaylistDTO playlistDTO = new PlaylistDTO(1L, "awesome stuff");
+        PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
 
         playlistService.createPlaylist(playlistDTO);
         assertEquals(3, playlistRepository.findAll().size());
