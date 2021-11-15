@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
 import java.security.Principal;
 import java.util.List;
 
@@ -47,9 +48,9 @@ public class PlaylistController {
          playlistService.updatePlaylist(id, movieDTO);
     }
 
-    @PatchMapping("/delete/{id}")
-    public void deleteMovie(@PathVariable("id") Long id, @RequestBody MovieDTO movieDTO){
-        playlistService.deleteMovie(id, movieDTO);
+    @PatchMapping(path = "/delete", params = {"playlistId", "imdbId"})
+    public void deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId){
+        playlistService.deleteMovie(playlistId, imdbId);
     }
 
     @DeleteMapping("/{id}")
