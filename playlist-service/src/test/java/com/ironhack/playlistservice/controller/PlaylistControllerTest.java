@@ -147,7 +147,7 @@ class PlaylistControllerTest {
     @Test
     void deleteMovie() throws Exception {
 
-        MvcResult mvcResult = mockMvc.perform(patch("/api/playlist/delete")
+        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist/delete")
                 .param("playlistId", playlist1.getId().toString())
                 .param("imdbId", movie1.getImdbId()))
                 .andExpect(status().isOk())
