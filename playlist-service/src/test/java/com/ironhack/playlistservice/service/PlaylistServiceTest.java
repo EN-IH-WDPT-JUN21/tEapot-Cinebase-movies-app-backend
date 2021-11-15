@@ -109,11 +109,8 @@ class PlaylistServiceTest {
     @Test
     @Order(2)
     void deleteMovie() {
-        MovieDTO movieDTO=new MovieDTO();
-        movieDTO.setImdbId(movie1.getImdbId());
-        movieDTO.setTitle(movie1.getTitle());
 
-        playlistService.deleteMovie(playlist1.getId(), movieDTO);
+        playlistService.deleteMovie(playlist1.getId(), movie1.getImdbId());
         assertEquals(1, playlistRepository.findById(playlist1.getId()).get().getMovies().size());
     }
 

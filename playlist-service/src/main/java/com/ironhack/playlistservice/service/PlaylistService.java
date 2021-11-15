@@ -77,9 +77,9 @@ public class PlaylistService {
         }
     }
 
-    public void deleteMovie(Long id, MovieDTO movieDTO){
+    public void deleteMovie(Long id, String imdbId){
         var playlist = playlistRepository.findById(id);
-        var movie = movieRepository.findByImdbId(movieDTO.getImdbId());
+        var movie = movieRepository.findByImdbId(imdbId);
         if(playlist.isPresent() && movie.isPresent()){
             playlist.get().deleteMovie(movie.get());
             playlistRepository.save(playlist.get());

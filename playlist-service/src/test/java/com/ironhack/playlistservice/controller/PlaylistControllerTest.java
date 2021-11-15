@@ -146,14 +146,10 @@ class PlaylistControllerTest {
 
     @Test
     void deleteMovie() throws Exception {
-        MovieDTO movieDTO=new MovieDTO();
-        movieDTO.setImdbId(movie1.getImdbId());
-        movieDTO.setTitle(movie1.getTitle());
 
-        String body=objectMapper.writeValueAsString(movieDTO);
-        MvcResult mvcResult = mockMvc.perform(patch("/api/playlist/delete/"+playlist1.getId().toString())
-                .content(body)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist/delete")
+                .param("playlistId", playlist1.getId().toString())
+                .param("imdbId", movie1.getImdbId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
