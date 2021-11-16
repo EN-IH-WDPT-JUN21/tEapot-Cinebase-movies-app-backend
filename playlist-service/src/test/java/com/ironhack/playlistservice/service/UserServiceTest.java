@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.text.ParseException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,8 +35,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User("hellokitty", "htmlerror404");
-        user2 = new User("evilnamesake", "let!tbee");
+        user1 = new User("hellokitty");
+        user2 = new User("evilnamesake");
         userRepository.saveAll(List.of(user1, user2));
     }
 
@@ -57,8 +58,8 @@ class UserServiceTest {
     }
 
     @Test
-    void getByUsername() {
-        UserDTO testUser = userService.getByUsername(user1.getUsername());
+    void getByUsername() throws ParseException {
+        UserDTO testUser = userService.getByEmail(user1.getEmail());
         assertEquals("hellokitty", testUser.getUsername());
     }
 
@@ -67,7 +68,7 @@ class UserServiceTest {
         UpdateRequest updateRequest=new UpdateRequest();
         updateRequest.setBio("I love movies");
 
-        userService.updateUser(user1.getId(), updateRequest);
+        userService.updateUser(user1.getEmail(), updateRequest);
 
         assertEquals("I love movies", userRepository.findById(user1.getId()).get().getBio());
     }
@@ -80,7 +81,7 @@ class UserServiceTest {
     }
 
     @Test
-    void createUser() {
+    void createUser() throws ParseException {
         UserDTO userDTO = new UserDTO("laurapalmer", "pikachuuu");
 
         userService.createUser(userDTO);

@@ -16,15 +16,14 @@ public class UserDTO {
 
     private Long id;
     private String username;
-    private String password;
+    private String email;
     private String imageUrl;
     private String bio;
     private List<Long> playlists;
 
-    public UserDTO(Long id, String username, String password, String imageUrl) {
+    public UserDTO(Long id, String username, String email, String imageUrl) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.imageUrl = imageUrl;
     }
 
@@ -34,8 +33,11 @@ public class UserDTO {
         this.playlists = playlists;
     }
 
-    public UserDTO(String username, String password) {
+    public UserDTO(String username, String email) {
         this.username = username;
-        this.password = password;
+    }
+
+    public UserDTO(String email) {
+        this.email=email;
     }
 }

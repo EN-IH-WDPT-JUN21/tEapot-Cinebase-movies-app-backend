@@ -54,8 +54,8 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        user1 = new User("hellokitty", "htmlerror404");
-        user2 = new User("evilnamesake", "let!tbee");
+        user1 = new User("hellokitty");
+        user2 = new User("evilnamesake");
         userRepository.saveAll(List.of(user1, user2));
 
     }

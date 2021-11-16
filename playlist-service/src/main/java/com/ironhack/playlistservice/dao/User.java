@@ -21,16 +21,15 @@ public class User {
     private Long id;
 
     private String username;
-    private String password;
     private String imageUrl;
     private String bio;
+    private String email;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Long> playlists;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User(String email) {
+        this.email = email;
     }
 }

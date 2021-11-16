@@ -4,11 +4,13 @@ import com.ironhack.playlistservice.dao.User;
 import com.ironhack.playlistservice.dto.UpdateRequest;
 import com.ironhack.playlistservice.dto.UserDTO;
 import com.ironhack.playlistservice.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,9 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> userDTOS = new ArrayList<>();
@@ -40,17 +45,17 @@ public class UserService {
         }
     }
 
-    public UserDTO getByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+    public UserDTO getByEmail(String email) throws ParseException {
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
-            return getUser(user.get());
+            return convertToDto(userRepository.findByEmail(email).get());
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with username " + username);
+            return createUser(new UserDTO(email));
         }
     }
 
-    public void updateUser(Long id, UpdateRequest updateRequest){
-        var user = userRepository.findById(id);
+    public void updateUser(String email, UpdateRequest updateRequest){
+        var user = userRepository.findByEmail(email);
         if(user.isPresent()){
             if(updateRequest.getPlaylistId()!= null){
                 user.get().getPlaylists().add(updateRequest.getPlaylistId());
@@ -63,7 +68,7 @@ public class UserService {
             }
             userRepository.save(user.get());
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with id " + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with email " + email);
         }
     }
 
@@ -71,8 +76,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void createUser(UserDTO userDTO) {
-        userRepository.save(dtoToDao(userDTO));
+    public UserDTO createUser(UserDTO userDTO) throws ParseException {
+        User createdUser=userRepository.save(convertToEntity(userDTO));
+        userDTO=convertToDto(createdUser);
+        return userDTO;
     }
 
 
@@ -81,16 +88,21 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
-        userDTO.setPassword(user.getPassword());
         userDTO.setImageUrl(user.getImageUrl());
         return userDTO;
     }
 
-    public User dtoToDao(UserDTO userDTO) {
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setImageUrl(userDTO.getImageUrl());
+    public User dtoToDao(UserDTO userDTO) throws ParseException {
+        return convertToEntity(userDTO);
+    }
+
+    public UserDTO convertToDto(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        return userDTO;
+    }
+
+    public User convertToEntity(UserDTO userDTO) throws ParseException {
+        User user = modelMapper.map(userDTO, User.class);
         return user;
     }
 }
