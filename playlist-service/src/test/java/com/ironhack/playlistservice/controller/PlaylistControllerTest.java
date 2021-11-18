@@ -73,8 +73,8 @@ class PlaylistControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        user1 = new User("hellokitty", "htmlerror404");
-        user2 = new User("evilnamesake", "let!tbee");
+        user1 = new User("hellokitty");
+        user2 = new User("evilnamesake");
         userRepository.saveAll(List.of(user1, user2));
         movie1 = new Movie("tt1375666", "Inception");
         movie2 = new Movie("tt2382320", "No Time to Die");
@@ -115,7 +115,7 @@ class PlaylistControllerTest {
     @Test
     void getByUserId() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("userid", user1.getId().toString());
+        params.add("userid", String.valueOf(user1.getId()));
         MvcResult mvcResult = mockMvc.perform(
                 get("/api/playlist/user").queryParams(params))
                 .andReturn();
