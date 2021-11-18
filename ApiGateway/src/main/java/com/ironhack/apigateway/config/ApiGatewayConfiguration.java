@@ -7,10 +7,35 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ApiGatewayConfiguration {
+
+
+
+    @Bean
+    CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8000", "http://localhost:8100"));
+        corsConfig.setMaxAge(8000L);
+        corsConfig.addAllowedMethod("GET");
+        corsConfig.addAllowedMethod("PUT");
+        corsConfig.addAllowedMethod("POST");
+        corsConfig.addAllowedMethod("PATCH");
+        corsConfig.addAllowedMethod("DELETE");
+        corsConfig.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+        return new CorsWebFilter(source);
+    }
 
     @Bean
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {

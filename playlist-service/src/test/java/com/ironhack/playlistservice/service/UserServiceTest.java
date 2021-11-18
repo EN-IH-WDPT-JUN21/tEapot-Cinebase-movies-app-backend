@@ -52,8 +52,8 @@ class UserServiceTest {
     }
 
     @Test
-    void getById() {
-        UserDTO testUser = userService.getById(user1.getId());
+    void getByEmail() throws ParseException {
+        UserDTO testUser = userService.getByEmail(user1.getEmail());
         assertEquals("hellokitty", testUser.getUsername());
     }
 
@@ -70,19 +70,19 @@ class UserServiceTest {
 
         userService.updateUser(user1.getEmail(), updateRequest);
 
-        assertEquals("I love movies", userRepository.findById(user1.getId()).get().getBio());
+        assertEquals("I love movies", userRepository.findByEmail(user1.getEmail()).get().getBio());
     }
 
     @Test
     void deleteUser() {
-        userService.deleteUser(user1.getId());
+        userService.deleteUser(user1.getEmail());
 
         assertEquals(1, userRepository.findAll().size());
     }
 
     @Test
     void createUser() throws ParseException {
-        UserDTO userDTO = new UserDTO("laurapalmer", "pikachuuu");
+        UserDTO userDTO = new UserDTO("laurapalmer");
 
         userService.createUser(userDTO);
         assertEquals(3, userRepository.findAll().size());

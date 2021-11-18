@@ -74,7 +74,7 @@ class UserControllerTest {
 
     @Test
     void getById() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/api/users/"+user1.getId().toString()))
+        MvcResult mvcResult = mockMvc.perform(get("/api/users/"+user1.getEmail().toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -90,8 +90,8 @@ class UserControllerTest {
                 get("/api/users/user").queryParams(params))
                 .andReturn();
 
-        assertTrue(mvcResult.getResponse().getContentAsString().contains(user1.getId().toString()));
-        assertFalse(mvcResult.getResponse().getContentAsString().contains(user2.getId().toString()));
+        assertTrue(mvcResult.getResponse().getContentAsString().contains(user1.getEmail().toString()));
+        assertFalse(mvcResult.getResponse().getContentAsString().contains(user2.getEmail().toString()));
     }
 
     @Test
@@ -100,18 +100,18 @@ class UserControllerTest {
         updateRequest.setBio("I love movies");
 
         String body=objectMapper.writeValueAsString(updateRequest);
-        MvcResult mvcResult = mockMvc.perform(patch("/api/users/"+user1.getId().toString())
+        MvcResult mvcResult = mockMvc.perform(patch("/api/users/"+user1.getEmail().toString())
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals("I love movies", userRepository.findById(user1.getId()).get().getBio());
+        assertEquals("I love movies", userRepository.findByEmail(user1.getEmail()).get().getBio());
     }
 
     @Test
     void createUser() throws Exception {
-        UserDTO userDTO = new UserDTO("laurapalmer", "pikachuuu");
+        UserDTO userDTO = new UserDTO("laurapalmer");
 
         String body = objectMapper.writeValueAsString(userDTO);
         MvcResult mvcResult = mockMvc.perform(
@@ -125,7 +125,7 @@ class UserControllerTest {
 
     @Test
     void deleteUser() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(delete("/api/users/"+user1.getId().toString()))
+        MvcResult mvcResult = mockMvc.perform(delete("/api/users/"+user1.getEmail().toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 

@@ -8,14 +8,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
 
@@ -27,19 +30,16 @@ public class UserService {
     private ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers() {
-        List<UserDTO> userDTOS = new ArrayList<>();
-        var users = userRepository.findAll();
-        for (User user : users) {
-            UserDTO userDTO = getUser(user);
-            userDTOS.add(userDTO);
-        }
-        return userDTOS;
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public UserDTO getById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            return getUser(user.get());
+            return convertToDto(user.get());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with id " + id);
         }
@@ -72,25 +72,27 @@ public class UserService {
         }
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
     }
 
     public UserDTO createUser(UserDTO userDTO) throws ParseException {
-        User createdUser=userRepository.save(convertToEntity(userDTO));
-        userDTO=convertToDto(createdUser);
-        return userDTO;
+        System.out.println(userDTO.getEmail());
+        if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
+            return convertToDto(userRepository.findByEmail(userDTO.getEmail()).get());
+        }else{
+        User createdUser=convertToEntity(userDTO);
+            if(createdUser.getPlaylists()==null) {
+                createdUser.setPlaylists(new ArrayList<>());
+            }
+        createdUser=userRepository.save(createdUser);
+        convertToDto(userRepository.findByEmail(createdUser.getEmail()).get());
+        return convertToDto(userRepository.findByEmail(userDTO.getEmail()).get());
+        }
     }
 
 
-    //**** UTIL METHODS *****
-    public UserDTO getUser(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setImageUrl(user.getImageUrl());
-        return userDTO;
-    }
+
 
     public User dtoToDao(UserDTO userDTO) throws ParseException {
         return convertToEntity(userDTO);

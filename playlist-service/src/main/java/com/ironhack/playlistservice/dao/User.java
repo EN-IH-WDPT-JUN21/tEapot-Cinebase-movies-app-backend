@@ -1,5 +1,7 @@
 package com.ironhack.playlistservice.dao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,12 +21,12 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
+    @NotNull
+    private String email;
     private String username;
     private String imageUrl;
     private String bio;
-    private String email;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -31,5 +34,9 @@ public class User {
 
     public User(String email) {
         this.email = email;
+        this.bio="";
+        this.username="";
+        this.imageUrl="";
+        this.playlists=new ArrayList<>();
     }
 }

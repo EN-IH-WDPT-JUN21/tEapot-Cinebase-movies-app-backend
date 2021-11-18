@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins= {"http://localhost:4200", "http://localhost:8000"}, allowedHeaders = "*")
+//@CrossOrigin(origins= {"http://localhost:4200", "http://localhost:8000"})
 public class UserController {
     @Autowired
     UserService userService;
@@ -25,7 +25,7 @@ public class UserController {
         if (principal != null) {
             model.addAttribute("profile", principal.getClaims());
         }
-        return "no auth get works";
+        return principal.getAccessTokenHash();
     }
 
     @GetMapping
@@ -37,25 +37,25 @@ public class UserController {
 
     @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getByUsername(@PathVariable("email") String email) throws ParseException {
+    public UserDTO getByEmail(@PathVariable("email") String email) throws ParseException {
         return userService.getByEmail(email);
     }
 
 
-    @PatchMapping("/{email}")
+    @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable("email") String email, @RequestBody UpdateRequest updateRequest){
         userService.updateUser(email, updateRequest);
     }
 
-    @PostMapping("/{email}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody UserDTO userDTO) throws ParseException {
-        userService.createUser(userDTO);
+    public UserDTO createUser(@RequestBody UserDTO userDTO) throws ParseException {
+        return userService.createUser(userDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{email}")
+    public void deleteUser(@PathVariable("email") String email) {
+        userService.deleteUser(email);
     }
 }
