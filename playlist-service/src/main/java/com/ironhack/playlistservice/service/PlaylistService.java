@@ -6,6 +6,7 @@ import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
+import com.ironhack.playlistservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,12 @@ public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
     private final MovieRepository movieRepository;
+    private final UserRepository userRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository, UserRepository userRepository) {
         this.playlistRepository = playlistRepository;
         this.movieRepository = movieRepository;
+        this.userRepository = userRepository;
     }
 
     public List<PlaylistDTO> getAllPlaylists() {
@@ -56,11 +59,20 @@ public class PlaylistService {
     }
 
     public void deletePlaylist(Long id) {
-        playlistRepository.deleteById(id);
+        var playlist = playlistRepository.findById(id);
+        var user = userRepository.findById(playlist.get().getUserId());
+        if(playlist.isPresent()) {
+            user.get().getPlaylists().remove(playlist.get().getId());
+            userRepository.save(user.get());
+            playlistRepository.deleteById(id);
+        }
     }
 
     public void createPlaylist(PlaylistDTO playlistDTO) {
+        var user = userRepository.findById(playlistDTO.getUserId());
         playlistRepository.save(dtoToDao(playlistDTO));
+        user.get().getPlaylists().add(playlistDTO.getId());
+        userRepository.save(user.get());
     }
 
     public void updatePlaylist(Long id, MovieDTO movieDTO){
