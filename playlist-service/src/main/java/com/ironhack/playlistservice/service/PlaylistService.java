@@ -144,7 +144,7 @@ public class PlaylistService {
     public MovieDTO movieToDto(Movie movie) {
         MovieDTO movieDTO = new MovieDTO();
         movieDTO.setTitle(movie.getTitle());
-        movieDTO.setImdbId(movieDTO.getImdbId());
+        movieDTO.setImdbId(movie.getImdbId());
         return movieDTO;
     }
 }
