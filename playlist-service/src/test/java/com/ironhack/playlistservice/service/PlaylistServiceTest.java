@@ -52,8 +52,8 @@ class PlaylistServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User("hellokitty", "htmlerror404");
-        user2 = new User("evilnamesake", "let!tbee");
+        user1 = new User("hellokitty");
+        user2 = new User("evilnamesake");
         userRepository.saveAll(List.of(user1, user2));
         movie1 = new Movie("tt1375666", "Inception");
         movie2 = new Movie("tt2382320", "No Time to Die");
@@ -62,8 +62,8 @@ class PlaylistServiceTest {
         movies1.add(movie1);
         movies1.add(movie2);
         movies2.add(movie3);
-        playlist1= new Playlist(user1.getId(), "My movies", movies1);
-        playlist2= new Playlist(user2.getId(), "My series", movies2);
+        playlist1= new Playlist(user1, "My movies", movies1);
+        playlist2= new Playlist(user2, "My series", movies2);
         playlistRepository.saveAll(List.of(playlist1, playlist2));
     }
 
@@ -91,7 +91,7 @@ class PlaylistServiceTest {
     @Test
     @Order(1)
     void getByUserId() {
-        List<PlaylistDTO> list = playlistService.getByUserId(playlist1.getUserId());
+        List<PlaylistDTO> list = playlistService.getByUserEmail(user1.getEmail());
         assertEquals(1, list.size());
     }
 

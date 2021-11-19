@@ -48,9 +48,9 @@ public class PlaylistService {
         }
     }
 
-    public List<PlaylistDTO> getByUserId(Long userId) {
+    public List<PlaylistDTO> getByUserEmail(String email) {
         List<PlaylistDTO> playlistDTOS = new ArrayList<>();
-        var playlists = playlistRepository.findByUserId(userId);
+        var playlists = playlistRepository.findByUserId_Email(email);
         for (Playlist playlist : playlists) {
             PlaylistDTO playlistDTO = getPlaylist(playlist);
             playlistDTOS.add(playlistDTO);
@@ -60,7 +60,7 @@ public class PlaylistService {
 
     public void deletePlaylist(Long id) {
         var playlist = playlistRepository.findById(id);
-        var user = userRepository.findById(playlist.get().getUserId());
+        var user = userRepository.findById(playlist.get().getUser().getId());
         if(playlist.isPresent()) {
             user.get().getPlaylists().remove(playlist.get().getId());
             userRepository.save(user.get());
@@ -105,7 +105,7 @@ public class PlaylistService {
         PlaylistDTO playlistDTO = new PlaylistDTO();
         playlistDTO.setId(playlist.getId());
         playlistDTO.setName(playlist.getName());
-        playlistDTO.setUserId(playlist.getUserId());
+        playlistDTO.setUserId(playlist.getUser().getId());
 
         if(playlist.getMovies()!=null) {
             List<MovieDTO> moviesDTO = new ArrayList<>();
@@ -121,7 +121,7 @@ public class PlaylistService {
     public Playlist dtoToDao(PlaylistDTO playlistDTO) {
         Playlist playlist = new Playlist();
         playlist.setName(playlistDTO.getName());
-        playlist.setUserId(playlistDTO.getUserId());
+        playlist.setUser(userRepository.getById(playlistDTO.getId()));
 
         if(playlistDTO.getMovies()!=null) {
             List<Movie> movies = new ArrayList<>();
@@ -144,7 +144,7 @@ public class PlaylistService {
     public MovieDTO movieToDto(Movie movie) {
         MovieDTO movieDTO = new MovieDTO();
         movieDTO.setTitle(movie.getTitle());
-        movieDTO.setImdbId(movieDTO.getImdbId());
+        movieDTO.setImdbId(movie.getImdbId());
         return movieDTO;
     }
 }

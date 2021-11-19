@@ -22,15 +22,17 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
     private String name;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Movie> movies;
 
-    public Playlist(Long userId, String name, List<Movie> movies) {
-        this.userId = userId;
+    public Playlist(User user, String name, List<Movie> movies) {
+        this.user = user;
         this.name = name;
         this.movies = movies;
     }

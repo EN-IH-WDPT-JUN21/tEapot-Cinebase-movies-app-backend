@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/playlist")
-@CrossOrigin(origins="http://localhost:4200")
 public class PlaylistController {
     @Autowired
     PlaylistService playlistService;
@@ -31,10 +30,10 @@ public class PlaylistController {
         return playlistService.getById(id);
     }
 
-    @GetMapping("/user")
+    @GetMapping(path = "", params = {"email"})
     @ResponseStatus(HttpStatus.OK)
-    public List<PlaylistDTO> getByUserId(@RequestParam (value="userid") Long userId) {
-        return playlistService.getByUserId(userId);
+    public List<PlaylistDTO> getByUserEmail(@RequestParam (value="email") String email) {
+        return playlistService.getByUserEmail(email);
     }
 
     @PostMapping
