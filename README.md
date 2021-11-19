@@ -1,17 +1,5 @@
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![CRM][CRM-shield]][CRM-url]
-[![Ironhack][Ironhack-shield]][Ironhack-url]
-[![Santander][Santander-shield]][Santander-url]
 
-<img alt="project logo" src="https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-backend/blob/main/logo-20.png">
+<img alt="project logo" src="https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-backend/blob/main/logo-20.png" style = "max-width: 80px;">
 
 <br />
 <p align="center">
