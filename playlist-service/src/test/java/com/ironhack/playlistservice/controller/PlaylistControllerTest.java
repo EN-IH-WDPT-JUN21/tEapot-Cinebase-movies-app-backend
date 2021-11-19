@@ -115,7 +115,7 @@ class PlaylistControllerTest {
     @Test
     void getByUserId() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("userid", Long.valueOf(user1.getId()).toString());
+        params.add("userid", String.valueOf(user1.getId()));
         MvcResult mvcResult = mockMvc.perform(
                 get("/api/playlist/user").queryParams(params))
                 .andReturn();
