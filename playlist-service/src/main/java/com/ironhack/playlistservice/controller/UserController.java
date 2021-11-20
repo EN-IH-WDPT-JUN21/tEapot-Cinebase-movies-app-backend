@@ -2,14 +2,22 @@ package com.ironhack.playlistservice.controller;
 
 import com.ironhack.playlistservice.dto.UpdateRequest;
 import com.ironhack.playlistservice.dto.UserDTO;
+import com.ironhack.playlistservice.repository.ImageRepository;
 import com.ironhack.playlistservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -19,6 +27,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+
 
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal OidcUser principal) {
@@ -41,6 +50,11 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
+    @GetMapping(value = "/image/{imageId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    Resource downloadImage(@PathVariable(name="imageId") Long imageId) {
+        return userService.getImage(imageId);
+    }
+
 
     @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
@@ -53,6 +67,12 @@ public class UserController {
     public UserDTO createUser(@RequestBody UserDTO userDTO) throws ParseException {
         return userService.createUser(userDTO);
     }
+
+    @PostMapping("/{email}/image")
+    public Long uploadImage(@PathVariable(name="email") String email, @RequestParam MultipartFile multipartImage) throws Exception {
+        return userService.storeImage(email, multipartImage);
+    }
+
 
     @DeleteMapping("/{email}")
     public void deleteUser(@PathVariable("email") String email) {

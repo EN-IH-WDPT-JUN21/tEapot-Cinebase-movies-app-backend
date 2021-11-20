@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/api/users/**").permitAll() // GET requests don't need auth
+                .mvcMatchers(HttpMethod.GET, "/api/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.POST, "/api/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.PATCH, "/api/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.PUT, "/api/**").permitAll() // GET requests don't need auth
