@@ -59,7 +59,8 @@ public class UserService {
         if (user.isPresent()) {
             return convertToDto(userRepository.findByEmail(email).get());
         } else {
-            return createUser(new UserDTO());
+//            return createUser(new UserDTO());
+            return null;
         }
     }
 
@@ -84,7 +85,7 @@ public class UserService {
     }
 
     public UserDTO createUser(UserDTO userDTO) throws ParseException {
-        System.out.println(userDTO.getEmail());
+
         if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
             return convertToDto(userRepository.findByEmail(userDTO.getEmail()).get());
         }else{
@@ -92,9 +93,9 @@ public class UserService {
             if(createdUser.getPlaylists()==null) {
                 createdUser.setPlaylists(new ArrayList<>());
             }
-        createdUser=userRepository.save(createdUser);
-        convertToDto(userRepository.findByEmail(createdUser.getEmail()).get());
-        return convertToDto(userRepository.findByEmail(userDTO.getEmail()).get());
+       createdUser=userRepository.save(createdUser);
+
+        return convertToDto(userRepository.findByEmail(createdUser.getEmail()).get());
         }
     }
 

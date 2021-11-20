@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/api/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.PATCH, "/api/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.PUT, "/api/**").permitAll() // GET requests don't need auth
+                .mvcMatchers(HttpMethod.DELETE, "/api/**").permitAll() // GET requests don't need auth
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -23,8 +23,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
+    @Column(unique=true)
     private String email;
     private String username;
+    @Lob
+    @Column
     private String bio;
 
     @ElementCollection
