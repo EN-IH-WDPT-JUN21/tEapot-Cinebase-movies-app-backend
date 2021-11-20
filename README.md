@@ -52,7 +52,7 @@
   Front End
   ===========================
   
-  The fron end part can be found in the following repo: https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-frontend
+  The front end part can be found in the following repo: https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-frontend
   
   
   Look and Feel
