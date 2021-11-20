@@ -25,18 +25,20 @@ public class User {
     @NotNull
     private String email;
     private String username;
-    private String imageUrl;
     private String bio;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Long> playlists;
 
+    @OneToOne
+    @JoinColumn(name="imageId")
+    Image image;
+
     public User(String email) {
         this.email = email;
         this.bio="";
         this.username="";
-        this.imageUrl="";
         this.playlists=new ArrayList<>();
     }
 }
