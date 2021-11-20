@@ -141,7 +141,7 @@ public class UserService {
         }else{
             User user=userRepository.findByEmail(email).get();
             UserStatsDTO userStats=new UserStatsDTO();
-            List<PlaylistDTO> playlist=playlistService.getByUserId(user.getId());
+            List<PlaylistDTO> playlist=playlistService.getByUserEmail(user.getEmail());
 
             userStats.setPlaylistsCount(playlist.size());
 
