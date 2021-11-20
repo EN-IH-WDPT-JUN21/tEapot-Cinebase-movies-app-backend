@@ -36,6 +36,18 @@
   
   <img alt="project architecture" src="https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-backend/blob/main/structure-Page-2.png">
   
+  Database MySQL Set-up
+  ===========================
+  
+  create database playlistApi;
+
+  use playlistApi;
+
+  CREATE USER 'ironhacker11'@'localhost' IDENTIFIED BY '1r0nH@ck3r';
+
+  GRANT ALL PRIVILEGES ON \*.\* TO 'ironhacker11'@'localhost';
+
+  FLUSH PRIVILEGES;
   
   Front End
   ===========================
