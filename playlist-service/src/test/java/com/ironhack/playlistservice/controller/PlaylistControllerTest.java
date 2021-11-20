@@ -122,7 +122,7 @@ class PlaylistControllerTest {
 
         String body = objectMapper.writeValueAsString(playlistDTO);
         MvcResult mvcResult = mockMvc.perform(
-                post("/api/playlist")
+                post("/api/playlist/hellokitty")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated()).andReturn();

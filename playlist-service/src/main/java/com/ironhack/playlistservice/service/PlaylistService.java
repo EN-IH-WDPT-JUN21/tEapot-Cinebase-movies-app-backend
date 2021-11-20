@@ -58,7 +58,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public List<PlaylistDTO> deletePlaylist(Long id) {
+    public void deletePlaylist(Long id) {
         var playlist = playlistRepository.findById(id);
         if (playlist.isPresent()) {
             var movies = playlist.get().getMovies();
@@ -72,9 +72,6 @@ public class PlaylistService {
                     movieRepository.deleteById(movie.getId());
                 }
             }
-
-            return playlistRepository.findByUserId_Email(playlist.get().getUser().getEmail())
-                    .stream().map(this::getPlaylist).collect(Collectors.toList());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no playlist with id " + id);
         }

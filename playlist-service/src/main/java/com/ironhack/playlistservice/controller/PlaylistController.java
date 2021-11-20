@@ -52,7 +52,7 @@ public class PlaylistController {
     }
 
     @DeleteMapping("/{id}")
-    public List<PlaylistDTO> deletePlaylist(@PathVariable("id") Long id) {
-        return playlistService.deletePlaylist(id);
+    public void deletePlaylist(@PathVariable("id") Long id) {
+        playlistService.deletePlaylist(id);
     }
 }
