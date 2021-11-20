@@ -69,9 +69,15 @@
   
   You can select your profile picture by clicking on the default Groot and add info about yourself by clicking on 'edit bio'.
   
-  Acknowledgements
+  Remarks
   ===========================
   When starting up playlist-service you may encounter JWT timeout error. In such case please start the application once again.
+  
+  This application is using IMDB API which is restricted in number of requets per day. 
+  
+  If you will be unable to fetch movies data you can replace the used key with a new one in frontend class src\app\service\movie-service\movies.service.ts
+
+  
   
   Contributing
   ===========================
