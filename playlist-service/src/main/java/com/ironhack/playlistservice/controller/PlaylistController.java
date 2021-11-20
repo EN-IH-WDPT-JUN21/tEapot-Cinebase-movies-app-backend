@@ -41,7 +41,7 @@ public class PlaylistController {
         playlistService.createPlaylist(playlistDTO, email);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public void updatePlaylist(@PathVariable("id") Long id, @RequestBody MovieDTO movieDTO) {
         playlistService.updatePlaylist(id, movieDTO);
     }

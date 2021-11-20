@@ -90,7 +90,7 @@ public class UserService {
         } else {
             User createdUser = convertToEntity(userDTO);
             if (createdUser.getPlaylists() == null) {
-                createdUser.setPlaylists(new ArrayList<>());
+                createdUser.setPlaylists(new HashSet<>());
             }
             createdUser = userRepository.save(createdUser);
 

@@ -10,7 +10,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -31,14 +33,14 @@ public class User {
     @Lob
     @Column
     private String bio;
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Long> playlists;
 
+    @JoinColumn(name = "playlists")
+    @ManyToMany
+    private Set<Playlist> playlists;
     public User(String email) {
         this.email = email;
         this.bio = "";
         this.username = "";
-        this.playlists = new ArrayList<>();
+        this.playlists = new HashSet<>();
     }
 }
