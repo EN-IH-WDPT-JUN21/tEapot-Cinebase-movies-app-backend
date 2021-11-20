@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -29,9 +30,9 @@ public class Playlist {
 
     @JoinColumn(name = "movies")
     @ManyToMany
-    private List<Movie> movies;
+    private Set<Movie> movies;
 
-    public Playlist(User user, String name, List<Movie> movies) {
+    public Playlist(User user, String name, Set<Movie> movies) {
         this.user = user;
         this.name = name;
         this.movies = movies;

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -16,9 +17,9 @@ public class PlaylistDTO {
     private Long id;
     private Long userId;
     private String name;
-    private List<MovieDTO> movies;
+    private Set<MovieDTO> movies;
 
-    public PlaylistDTO(Long id, Long userId, String name, List<MovieDTO> movies) {
+    public PlaylistDTO(Long id, Long userId, String name, Set<MovieDTO> movies) {
         this.id = id;
         this.userId = userId;
         this.name = name;

@@ -48,12 +48,12 @@ public class PlaylistController {
     }
 
     @DeleteMapping(path = "", params = {"playlistId", "imdbId"})
-    public void deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId){
-        playlistService.deleteMovie(playlistId, imdbId);
+    public PlaylistDTO deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId){
+        return playlistService.deleteMovie(playlistId, imdbId);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePlaylist(@PathVariable("id") Long id) {
-        playlistService.deletePlaylist(id);
+    public List<PlaylistDTO> deletePlaylist(@PathVariable("id") Long id) {
+        return playlistService.deletePlaylist(id);
     }
 }

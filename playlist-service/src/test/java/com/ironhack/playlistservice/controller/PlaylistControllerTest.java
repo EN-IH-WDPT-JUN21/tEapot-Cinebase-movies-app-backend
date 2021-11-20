@@ -1,6 +1,5 @@
 package com.ironhack.playlistservice.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ironhack.playlistservice.PlaylistServiceApplication;
 import com.ironhack.playlistservice.dao.Movie;
@@ -8,8 +7,6 @@ import com.ironhack.playlistservice.dao.Playlist;
 import com.ironhack.playlistservice.dao.User;
 import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
-import com.ironhack.playlistservice.dto.UpdateRequest;
-import com.ironhack.playlistservice.dto.UserDTO;
 import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
 import com.ironhack.playlistservice.repository.UserRepository;
@@ -28,8 +25,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,37 +36,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class PlaylistControllerTest {
 
-    @MockBean
-    private PlaylistServiceApplication playlistServiceApplication;
-
-    @Autowired
-    private PlaylistController playlistController;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private PlaylistRepository playlistRepository;
-
-    @Autowired
-    private MovieRepository movieRepository;
-
-    private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private UserRepository userRepository;
-
     User user1;
     User user2;
-
     Playlist playlist1;
     Playlist playlist2;
     Movie movie1;
     Movie movie2;
     Movie movie3;
-    List<Movie> movies1 = new ArrayList<>();
-    List<Movie> movies2 = new ArrayList<>();
+    Set<Movie> movies1 = new HashSet<>();
+    Set<Movie> movies2 = new HashSet<>();
+    @MockBean
+    private PlaylistServiceApplication playlistServiceApplication;
+    @Autowired
+    private PlaylistController playlistController;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    @Autowired
+    private PlaylistRepository playlistRepository;
+    @Autowired
+    private MovieRepository movieRepository;
+    private MockMvc mockMvc;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
@@ -83,8 +73,8 @@ class PlaylistControllerTest {
         movies1.add(movie1);
         movies1.add(movie2);
         movies2.add(movie3);
-        playlist1= new Playlist(user1, "My movies", movies1);
-        playlist2= new Playlist(user2, "My series", movies2);
+        playlist1 = new Playlist(user1, "My movies", movies1);
+        playlist2 = new Playlist(user2, "My series", movies2);
         playlistRepository.saveAll(List.of(playlist1, playlist2));
     }
 
@@ -104,7 +94,7 @@ class PlaylistControllerTest {
 
     @Test
     void getById() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/api/playlist/"+playlist1.getId().toString()))
+        MvcResult mvcResult = mockMvc.perform(get("/api/playlist/" + playlist1.getId().toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -140,12 +130,12 @@ class PlaylistControllerTest {
 
     @Test
     void updatePlaylist() throws Exception {
-        MovieDTO movieDTO=new MovieDTO();
+        MovieDTO movieDTO = new MovieDTO();
         movieDTO.setImdbId("tt0110912");
         movieDTO.setTitle("Pulp Fiction");
 
-        String body=objectMapper.writeValueAsString(movieDTO);
-        MvcResult mvcResult = mockMvc.perform(patch("/api/playlist/"+playlist1.getId().toString())
+        String body = objectMapper.writeValueAsString(movieDTO);
+        MvcResult mvcResult = mockMvc.perform(patch("/api/playlist/" + playlist1.getId().toString())
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -168,7 +158,7 @@ class PlaylistControllerTest {
 
     @Test
     void deletePlaylist() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist/"+playlist1.getId().toString()))
+        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist/" + playlist1.getId().toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 

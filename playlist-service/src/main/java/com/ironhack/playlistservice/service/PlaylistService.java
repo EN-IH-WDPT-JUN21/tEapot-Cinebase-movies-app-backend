@@ -7,14 +7,13 @@ import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.repository.MovieRepository;
 import com.ironhack.playlistservice.repository.PlaylistRepository;
 import com.ironhack.playlistservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PlaylistService {
@@ -58,14 +57,29 @@ public class PlaylistService {
         return playlistDTOS;
     }
 
-    public void deletePlaylist(Long id) {
+    @Transactional
+    public List<PlaylistDTO> deletePlaylist(Long id) {
         var playlist = playlistRepository.findById(id);
-        var user = userRepository.findById(playlist.get().getUser().getId());
-        if(playlist.isPresent()) {
+        if (playlist.isPresent()) {
+            var movies = playlist.get().getMovies();
+            var user = userRepository.findById(playlist.get().getUser().getId());
             user.get().getPlaylists().remove(playlist.get().getId());
             userRepository.save(user.get());
             playlistRepository.deleteById(id);
+
+            for ( Movie movie : movies ) {
+                if (movie.getPlaylists().size() == 0) {
+                    movieRepository.deleteById(movie.getId());
+                }
+            }
+
+            return playlistRepository.findByUserId_Email(playlist.get().getUser().getEmail())
+                    .stream().map(this::getPlaylist).collect(Collectors.toList());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no playlist with id " + id);
         }
+
+
     }
 
     public void createPlaylist(PlaylistDTO playlistDTO) {
@@ -75,13 +89,14 @@ public class PlaylistService {
         userRepository.save(user.get());
     }
 
-    public void updatePlaylist(Long id, MovieDTO movieDTO){
+    @Transactional
+    public void updatePlaylist(Long id, MovieDTO movieDTO) {
         var playlist = playlistRepository.findById(id);
         var movie = movieRepository.findByImdbId(movieDTO.getImdbId());
-        if(!movie.isPresent()){
+        if (!movie.isPresent()) {
             movieRepository.save(movieToDao(movieDTO));
         }
-        if(playlist.isPresent()){
+        if (playlist.isPresent()) {
             playlist.get().addMovie(movieRepository.findByImdbId(movieDTO.getImdbId()).get());
             playlistRepository.save(playlist.get());
         } else {
@@ -89,14 +104,18 @@ public class PlaylistService {
         }
     }
 
-    public void deleteMovie(Long id, String imdbId){
+    @Transactional
+    public PlaylistDTO deleteMovie(Long id, String imdbId) {
         var playlist = playlistRepository.findById(id);
         var movie = movieRepository.findByImdbId(imdbId);
-        if(playlist.isPresent() && movie.isPresent()){
+        if (playlist.isPresent() && movie.isPresent()) {
             playlist.get().deleteMovie(movie.get());
             playlistRepository.save(playlist.get());
-            List<Playlist> playlists = playlistRepository.findByMovies_ImdbId(imdbId);
-            System.out.println(playlists.size());;
+            Movie movieRemoved = movieRepository.getById(movie.get().getId());
+            if (movieRemoved.getPlaylists().size() == 0) {
+                movieRepository.deleteById(movieRemoved.getId());
+            }
+            return getPlaylist(playlistRepository.save(playlist.get()));
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
         }
@@ -109,8 +128,8 @@ public class PlaylistService {
         playlistDTO.setName(playlist.getName());
         playlistDTO.setUserId(playlist.getUser().getId());
 
-        if(playlist.getMovies()!=null) {
-            List<MovieDTO> moviesDTO = new ArrayList<>();
+        if (playlist.getMovies() != null) {
+            Set<MovieDTO> moviesDTO = new HashSet<>();
             var movies = playlist.getMovies();
             for (Movie movie : movies) {
                 moviesDTO.add(movieToDto(movie));
@@ -125,8 +144,8 @@ public class PlaylistService {
         playlist.setName(playlistDTO.getName());
         playlist.setUser(userRepository.getById(playlistDTO.getId()));
 
-        if(playlistDTO.getMovies()!=null) {
-            List<Movie> movies = new ArrayList<>();
+        if (playlistDTO.getMovies() != null) {
+            Set<Movie> movies = new HashSet<>();
             var moviesDTO = playlistDTO.getMovies();
             for (MovieDTO movieDTO : moviesDTO) {
                 movies.add(movieToDao(movieDTO));

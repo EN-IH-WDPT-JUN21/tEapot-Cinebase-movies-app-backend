@@ -17,7 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,8 +49,8 @@ class PlaylistServiceTest {
     Movie movie1;
     Movie movie2;
     Movie movie3;
-    List<Movie> movies1 = new ArrayList<>();
-    List<Movie> movies2 = new ArrayList<>();
+    Set<Movie> movies1 = new HashSet<>();
+    Set<Movie> movies2 = new HashSet<>();
 
     @BeforeEach
     void setUp() {
