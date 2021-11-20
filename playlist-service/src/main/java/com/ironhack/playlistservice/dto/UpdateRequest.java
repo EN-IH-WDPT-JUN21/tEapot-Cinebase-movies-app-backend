@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class UpdateRequest {
     private String imageUrl;
+    private String nickname;
     private String bio;
 
     public UpdateRequest(String imageUrl) {

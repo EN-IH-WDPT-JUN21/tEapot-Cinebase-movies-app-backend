@@ -1,5 +1,6 @@
 package com.ironhack.playlistservice.dto;
 
+import com.ironhack.playlistservice.dao.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +18,14 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
-    private String imageUrl;
     private String bio;
     private List<Long> playlists;
+    private String imageId;
 
     public UserDTO(String email) {
         this.email = email;
         this.bio="";
         this.username="";
-        this.imageUrl="";
         this.playlists=new ArrayList<>();
     }
 }
