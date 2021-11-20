@@ -1,9 +1,10 @@
 package com.ironhack.playlistservice.service;
 
 import com.ironhack.playlistservice.dao.Image;
+import com.ironhack.playlistservice.dao.Movie;
+import com.ironhack.playlistservice.dao.Playlist;
 import com.ironhack.playlistservice.dao.User;
-import com.ironhack.playlistservice.dto.UpdateRequest;
-import com.ironhack.playlistservice.dto.UserDTO;
+import com.ironhack.playlistservice.dto.*;
 import com.ironhack.playlistservice.repository.ImageRepository;
 import com.ironhack.playlistservice.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -18,9 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +28,8 @@ public class UserService {
     private final UserRepository userRepository;
     @Autowired
     ImageRepository imageRepository;
+    @Autowired
+    PlaylistService playlistService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -133,4 +134,40 @@ public class UserService {
                 .getContent();
         return new ByteArrayResource(image);
     }
+
+    public UserStatsDTO getUserStats(String email){
+        if(userRepository.findByEmail(email).isEmpty()){
+            return new UserStatsDTO();
+        }else{
+            User user=userRepository.findByEmail(email).get();
+            UserStatsDTO userStats=new UserStatsDTO();
+            List<PlaylistDTO> playlist=playlistService.getByUserId(user.getId());
+
+            userStats.setPlaylistsCount(playlist.size());
+
+            ArrayList<MovieDTO> allTitles=new ArrayList<>();
+            ArrayList<Integer> playlistSizes=new ArrayList<>();
+            for(PlaylistDTO i : playlist){
+                playlistSizes.add(i.getMovies().size());
+                allTitles.addAll(i.getMovies());
+            }
+            userStats.setTitlesCount((int) allTitles.stream().distinct().count());
+
+            OptionalDouble average = playlistSizes
+                    .stream()
+                    .mapToDouble(a -> a)
+                    .average();
+            userStats.setAvgTitlesInPlaylist(average.getAsDouble());
+
+            OptionalInt max = playlistSizes
+                    .stream()
+                    .mapToInt(a -> a)
+                    .max();
+            userStats.setMaxTitlesInPlaylist(max.getAsInt());
+
+            return userStats;
+        }
+    }
+
+
 }

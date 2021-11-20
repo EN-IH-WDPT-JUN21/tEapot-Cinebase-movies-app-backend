@@ -2,6 +2,7 @@ package com.ironhack.playlistservice.controller;
 
 import com.ironhack.playlistservice.dto.UpdateRequest;
 import com.ironhack.playlistservice.dto.UserDTO;
+import com.ironhack.playlistservice.dto.UserStatsDTO;
 import com.ironhack.playlistservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -50,6 +51,11 @@ public class UserController {
         return userService.getImage(imageId);
     }
 
+    @GetMapping("/{email}/stats")
+    @ResponseStatus(HttpStatus.OK)
+    public UserStatsDTO getUserStats(@PathVariable("email") String email) throws ParseException {
+        return userService.getUserStats(email);
+    }
 
     @PutMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
@@ -67,7 +73,6 @@ public class UserController {
     public Long uploadImage(@PathVariable(name="email") String email, @RequestParam MultipartFile multipartImage) throws Exception {
         return userService.storeImage(email, multipartImage);
     }
-
 
     @DeleteMapping("/{email}")
     public void deleteUser(@PathVariable("email") String email) {

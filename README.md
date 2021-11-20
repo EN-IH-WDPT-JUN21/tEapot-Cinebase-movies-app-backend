@@ -62,7 +62,23 @@
   
   <img alt="project logo" src="https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-backend/blob/main/iterface.png">
   
- 
+  Special Features
+  ===========================
+  
+  You will need to create an accout to enjoy the enhanced functionality. Up to you if you want to verify your email or not. 
+  
+  You can select your profile picture by clicking on the default Groot and add info about yourself by clicking on 'edit bio'.
+  
+  Remarks
+  ===========================
+  When starting up playlist-service you may encounter JWT timeout error. In such case please start the application once again.
+  
+  This application is using IMDB API which is restricted in number of requets per day. 
+  
+  If you will be unable to fetch movies data you can replace the used key with a new one in frontend class src\app\service\movie-service\movies.service.ts
+
+  
+  
   Contributing
   ===========================
   
