@@ -12,11 +12,6 @@ import org.springframework.context.annotation.Bean;
 //@EnableFeignClients
 public class PlaylistServiceApplication {
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(PlaylistServiceApplication.class, args);
 	}

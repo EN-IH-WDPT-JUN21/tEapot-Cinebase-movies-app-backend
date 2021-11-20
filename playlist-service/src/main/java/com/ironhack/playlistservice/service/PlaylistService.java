@@ -58,7 +58,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public List<PlaylistDTO> deletePlaylist(Long id) {
+    public void deletePlaylist(Long id) {
         var playlist = playlistRepository.findById(id);
         if (playlist.isPresent()) {
             var movies = playlist.get().getMovies();
@@ -67,14 +67,11 @@ public class PlaylistService {
             userRepository.save(user.get());
             playlistRepository.deleteById(id);
 
-            for ( Movie movie : movies ) {
+            for (Movie movie : movies) {
                 if (movie.getPlaylists().size() == 0) {
                     movieRepository.deleteById(movie.getId());
                 }
             }
-
-            return playlistRepository.findByUserId_Email(playlist.get().getUser().getEmail())
-                    .stream().map(this::getPlaylist).collect(Collectors.toList());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no playlist with id " + id);
         }
@@ -82,8 +79,12 @@ public class PlaylistService {
 
     }
 
-    public void createPlaylist(PlaylistDTO playlistDTO) {
-        var user = userRepository.findById(playlistDTO.getUserId());
+    @Transactional
+    public void createPlaylist(PlaylistDTO playlistDTO, String email) {
+        var user = userRepository.findByEmail(email);
+        if (playlistDTO.getUserId() == null || playlistDTO.getUserId() < 1) {
+            playlistDTO.setUserId(user.get().getId());
+        }
         playlistRepository.save(dtoToDao(playlistDTO));
         user.get().getPlaylists().add(playlistDTO.getId());
         userRepository.save(user.get());
@@ -142,7 +143,7 @@ public class PlaylistService {
     public Playlist dtoToDao(PlaylistDTO playlistDTO) {
         Playlist playlist = new Playlist();
         playlist.setName(playlistDTO.getName());
-        playlist.setUser(userRepository.getById(playlistDTO.getId()));
+        playlist.setUser(userRepository.getById(playlistDTO.getUserId()));
 
         if (playlistDTO.getMovies() != null) {
             Set<Movie> movies = new HashSet<>();

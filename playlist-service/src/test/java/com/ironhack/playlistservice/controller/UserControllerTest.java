@@ -83,11 +83,9 @@ class UserControllerTest {
     }
 
     @Test
-    void getByUsername() throws Exception {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("name", "hellokitty");
+    void getByEmail() throws Exception {
         MvcResult mvcResult = mockMvc.perform(
-                get("/api/users/user").queryParams(params))
+                get("/api/users/hellokitty"))
                 .andReturn();
 
         assertTrue(mvcResult.getResponse().getContentAsString().contains(user1.getEmail().toString()));
@@ -100,7 +98,7 @@ class UserControllerTest {
         updateRequest.setBio("I love movies");
 
         String body=objectMapper.writeValueAsString(updateRequest);
-        MvcResult mvcResult = mockMvc.perform(patch("/api/users/"+user1.getEmail().toString())
+        MvcResult mvcResult = mockMvc.perform(put("/api/users/"+user1.getEmail().toString())
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

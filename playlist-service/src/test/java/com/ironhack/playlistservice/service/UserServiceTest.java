@@ -36,7 +36,9 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         user1 = new User("hellokitty");
+        user1.setUsername("username1");
         user2 = new User("evilnamesake");
+        user2.setUsername("username2");
         userRepository.saveAll(List.of(user1, user2));
     }
 
@@ -54,13 +56,7 @@ class UserServiceTest {
     @Test
     void getByEmail() throws ParseException {
         UserDTO testUser = userService.getByEmail(user1.getEmail());
-        assertEquals("hellokitty", testUser.getUsername());
-    }
-
-    @Test
-    void getByUsername() throws ParseException {
-        UserDTO testUser = userService.getByEmail(user1.getEmail());
-        assertEquals("hellokitty", testUser.getUsername());
+        assertEquals("username1", testUser.getUsername());
     }
 
     @Test

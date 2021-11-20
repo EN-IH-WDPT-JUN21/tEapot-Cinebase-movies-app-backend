@@ -1,6 +1,5 @@
 package com.ironhack.playlistservice.controller;
 
-import com.ironhack.playlistservice.dao.Playlist;
 import com.ironhack.playlistservice.dto.MovieDTO;
 import com.ironhack.playlistservice.dto.PlaylistDTO;
 import com.ironhack.playlistservice.service.PlaylistService;
@@ -32,28 +31,28 @@ public class PlaylistController {
 
     @GetMapping(path = "", params = {"email"})
     @ResponseStatus(HttpStatus.OK)
-    public List<PlaylistDTO> getByUserEmail(@RequestParam (value="email") String email) {
+    public List<PlaylistDTO> getByUserEmail(@RequestParam(value = "email") String email) {
         return playlistService.getByUserEmail(email);
     }
 
-    @PostMapping
+    @PostMapping("/{email}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPlaylist(@RequestBody PlaylistDTO playlistDTO) {
-        playlistService.createPlaylist(playlistDTO);
+    public void createPlaylist(@PathVariable("email") String email, @RequestBody PlaylistDTO playlistDTO) {
+        playlistService.createPlaylist(playlistDTO, email);
     }
 
     @PatchMapping("/{id}")
-    public void updatePlaylist(@PathVariable("id") Long id, @RequestBody MovieDTO movieDTO){
-         playlistService.updatePlaylist(id, movieDTO);
+    public void updatePlaylist(@PathVariable("id") Long id, @RequestBody MovieDTO movieDTO) {
+        playlistService.updatePlaylist(id, movieDTO);
     }
 
     @DeleteMapping(path = "", params = {"playlistId", "imdbId"})
-    public PlaylistDTO deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId){
+    public PlaylistDTO deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId) {
         return playlistService.deleteMovie(playlistId, imdbId);
     }
 
     @DeleteMapping("/{id}")
-    public List<PlaylistDTO> deletePlaylist(@PathVariable("id") Long id) {
-        return playlistService.deletePlaylist(id);
+    public void deletePlaylist(@PathVariable("id") Long id) {
+        playlistService.deletePlaylist(id);
     }
 }

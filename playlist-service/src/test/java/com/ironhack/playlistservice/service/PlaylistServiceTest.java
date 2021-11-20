@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -77,6 +78,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Transactional
     @Order(1)
     void getAllPlaylists() {
         List<PlaylistDTO> list = playlistService.getAllPlaylists();
@@ -84,6 +86,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Transactional
     @Order(1)
     void getById() {
         PlaylistDTO playlistDTO = playlistService.getById(playlist1.getId());
@@ -91,6 +94,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Transactional
     @Order(1)
     void getByUserId() {
         List<PlaylistDTO> list = playlistService.getByUserEmail(user1.getEmail());
@@ -103,11 +107,12 @@ class PlaylistServiceTest {
     void createPlaylist() {
         PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
 
-        playlistService.createPlaylist(playlistDTO);
+        playlistService.createPlaylist(playlistDTO, user1.getEmail());
         assertEquals(3, playlistRepository.findAll().size());
     }
 
     @Test
+    @Transactional
     @Order(1)
     void updatePlaylist() {
         MovieDTO movieDTO=new MovieDTO();
@@ -120,6 +125,7 @@ class PlaylistServiceTest {
     }
 
     @Test
+    @Transactional
     @Order(2)
     void deleteMovie() {
 
