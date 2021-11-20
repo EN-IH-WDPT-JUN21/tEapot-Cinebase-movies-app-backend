@@ -65,11 +65,13 @@
   Special Features
   ===========================
   
-  Tou will need to create an accout to enjoy the enhanced functionality. Up to you if you want to verify your email or not. 
+  You will need to create an accout to enjoy the enhanced functionality. Up to you if you want to verify your email or not. 
   
   You can select your profile picture by clicking on the default Groot and add info about yourself by clicking on 'edit bio'.
   
-  
+  Acknowledgements
+  ===========================
+  When starting up playlist-service you may encounter JWT timeout error. In such case please start the application once again.
   
   Contributing
   ===========================
