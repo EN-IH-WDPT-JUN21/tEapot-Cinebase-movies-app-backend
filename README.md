@@ -62,7 +62,9 @@
   
   <img alt="project logo" src="https://github.com/EN-IH-WDPT-JUN21/tEapot-Cinebase-movies-app-backend/blob/main/iterface.png">
   
-  **Thank you!**
   
-  P.S. Try typing the route that doesn't exist...
+  Thank you!
+  ===========================
+  
+  P.S. Try a route that doesn't exist, you might discover something new...
   
