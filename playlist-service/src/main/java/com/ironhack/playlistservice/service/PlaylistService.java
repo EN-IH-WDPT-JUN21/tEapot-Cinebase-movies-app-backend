@@ -95,6 +95,8 @@ public class PlaylistService {
         if(playlist.isPresent() && movie.isPresent()){
             playlist.get().deleteMovie(movie.get());
             playlistRepository.save(playlist.get());
+            List<Playlist> playlists = playlistRepository.findByMovies_ImdbId(imdbId);
+            System.out.println(playlists.size());;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Playlist with id " + id);
         }

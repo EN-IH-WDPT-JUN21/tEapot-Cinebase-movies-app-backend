@@ -47,7 +47,7 @@ public class PlaylistController {
          playlistService.updatePlaylist(id, movieDTO);
     }
 
-    @DeleteMapping(path = "/delete", params = {"playlistId", "imdbId"})
+    @DeleteMapping(path = "", params = {"playlistId", "imdbId"})
     public void deleteMovie(@PathParam("playlistId") Long playlistId, @PathParam("imdbId") String imdbId){
         playlistService.deleteMovie(playlistId, imdbId);
     }

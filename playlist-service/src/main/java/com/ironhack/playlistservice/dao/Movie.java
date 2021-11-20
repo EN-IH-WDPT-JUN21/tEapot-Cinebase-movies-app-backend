@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +22,9 @@ public class Movie {
 
     private String imdbId;
     private String title;
+
+    @ManyToMany(mappedBy = "movies")
+    private List<Playlist> playlists;
 
 
     public Movie(String imdbId, String title) {

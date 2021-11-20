@@ -27,8 +27,8 @@ public class Playlist {
     private User user;
     private String name;
 
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinColumn(name = "movies")
+    @ManyToMany
     private List<Movie> movies;
 
     public Playlist(User user, String name, List<Movie> movies) {
