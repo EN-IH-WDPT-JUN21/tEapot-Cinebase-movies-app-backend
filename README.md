@@ -73,6 +73,8 @@
   ===========================
   When starting up playlist-service you may encounter JWT timeout error. In such case please start the application once again.
   
+  It may also happen when running tests and, as such, they may fail with JWT timeout error. In that case please also rerun the tests.
+  
   This application is using IMDB API which is restricted in number of requets per day. 
   
   If you will be unable to fetch movies data you can replace the used key with a new one in frontend class src\app\service\movie-service\movies.service.ts
