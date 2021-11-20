@@ -103,7 +103,7 @@ class PlaylistServiceTest {
     void createPlaylist() {
         PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
 
-        playlistService.createPlaylist(playlistDTO);
+        playlistService.createPlaylist(playlistDTO, user1.getEmail());
         assertEquals(3, playlistRepository.findAll().size());
     }
 

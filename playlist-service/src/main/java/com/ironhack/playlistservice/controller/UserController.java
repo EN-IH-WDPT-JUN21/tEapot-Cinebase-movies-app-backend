@@ -2,22 +2,17 @@ package com.ironhack.playlistservice.controller;
 
 import com.ironhack.playlistservice.dto.UpdateRequest;
 import com.ironhack.playlistservice.dto.UserDTO;
-import com.ironhack.playlistservice.repository.ImageRepository;
 import com.ironhack.playlistservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 

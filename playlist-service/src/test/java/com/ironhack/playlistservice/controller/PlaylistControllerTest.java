@@ -24,6 +24,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
 import java.util.List;
@@ -103,18 +104,19 @@ class PlaylistControllerTest {
     }
 
     @Test
-    void getByUserId() throws Exception {
+    void getByUserEmail() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("userid", String.valueOf(user1.getId()));
+        params.add("email", String.valueOf(user1.getEmail()));
         MvcResult mvcResult = mockMvc.perform(
-                get("/api/playlist/user").queryParams(params))
+                get("/api/playlist/").queryParams(params))
                 .andReturn();
 
-        assertTrue(mvcResult.getResponse().getContentAsString().contains(playlist1.getId().toString()));
-        assertFalse(mvcResult.getResponse().getContentAsString().contains(playlist2.getId().toString()));
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("My movies"));
+        assertFalse(mvcResult.getResponse().getContentAsString().contains("My series"));
     }
 
     @Test
+    @Transactional
     void createPlaylist() throws Exception {
         PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
 
@@ -129,6 +131,7 @@ class PlaylistControllerTest {
     }
 
     @Test
+    @Transactional
     void updatePlaylist() throws Exception {
         MovieDTO movieDTO = new MovieDTO();
         movieDTO.setImdbId("tt0110912");
@@ -145,9 +148,10 @@ class PlaylistControllerTest {
     }
 
     @Test
+    @Transactional
     void deleteMovie() throws Exception {
 
-        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist/delete")
+        MvcResult mvcResult = mockMvc.perform(delete("/api/playlist")
                 .param("playlistId", playlist1.getId().toString())
                 .param("imdbId", movie1.getImdbId()))
                 .andExpect(status().isOk())

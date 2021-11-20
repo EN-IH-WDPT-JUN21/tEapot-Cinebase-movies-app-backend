@@ -1,12 +1,10 @@
 package com.ironhack.playlistservice.dto;
 
-import com.ironhack.playlistservice.dao.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.ElementCollection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +22,8 @@ public class UserDTO {
 
     public UserDTO(String email) {
         this.email = email;
-        this.bio="";
-        this.username="";
-        this.playlists=new ArrayList<>();
+        this.bio = "";
+        this.username = "";
+        this.playlists = new ArrayList<>();
     }
 }

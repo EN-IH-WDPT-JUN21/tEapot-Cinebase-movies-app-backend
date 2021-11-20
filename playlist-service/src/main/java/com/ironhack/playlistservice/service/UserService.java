@@ -27,16 +27,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    @Autowired
+    ImageRepository imageRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-    @Autowired
-    ImageRepository imageRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -64,13 +62,13 @@ public class UserService {
         }
     }
 
-    public void updateUser(String email, UpdateRequest updateRequest){
+    public void updateUser(String email, UpdateRequest updateRequest) {
         var user = userRepository.findByEmail(email);
-        if(user.isPresent()){
-            if(updateRequest.getBio()!= null){
+        if (user.isPresent()) {
+            if (updateRequest.getBio() != null) {
                 user.get().setBio(updateRequest.getBio());
             }
-            if(updateRequest.getNickname()!= null){
+            if (updateRequest.getNickname() != null) {
                 user.get().setUsername(updateRequest.getNickname());
             }
 
@@ -86,20 +84,18 @@ public class UserService {
 
     public UserDTO createUser(UserDTO userDTO) throws ParseException {
 
-        if(userRepository.findByEmail(userDTO.getEmail()).isPresent()){
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
             return convertToDto(userRepository.findByEmail(userDTO.getEmail()).get());
-        }else{
-        User createdUser=convertToEntity(userDTO);
-            if(createdUser.getPlaylists()==null) {
+        } else {
+            User createdUser = convertToEntity(userDTO);
+            if (createdUser.getPlaylists() == null) {
                 createdUser.setPlaylists(new ArrayList<>());
             }
-       createdUser=userRepository.save(createdUser);
+            createdUser = userRepository.save(createdUser);
 
-        return convertToDto(userRepository.findByEmail(createdUser.getEmail()).get());
+            return convertToDto(userRepository.findByEmail(createdUser.getEmail()).get());
         }
     }
-
-
 
 
     public User dtoToDao(UserDTO userDTO) throws ParseException {
@@ -122,8 +118,8 @@ public class UserService {
         dbImage.setName(multipartImage.getName());
         dbImage.setContent(multipartImage.getBytes());
 
-        User user=userRepository.findByEmail(email).get();
-        if(user.getImage()!=null){
+        User user = userRepository.findByEmail(email).get();
+        if (user.getImage() != null) {
             dbImage.setId(user.getImage().getId());
         }
         user.setImage(imageRepository.save(dbImage));
