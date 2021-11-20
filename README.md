@@ -25,7 +25,7 @@
   The project will have at least these sections:
   - A section to search movies (the search should be case insensitive)
   - A movie detail
-  - Login/Register section (only registred users can create playlists)
+  - Login/Register section (only registered users can create playlists)
   - User profile page (if logged)
   - User playlist section (if logged)
   
