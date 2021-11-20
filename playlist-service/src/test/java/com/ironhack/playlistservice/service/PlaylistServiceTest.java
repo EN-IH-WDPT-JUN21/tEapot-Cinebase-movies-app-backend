@@ -52,8 +52,8 @@ class PlaylistServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User("hellokitty", "htmlerror404");
-        user2 = new User("evilnamesake", "let!tbee");
+        user1 = new User("hellokitty");
+        user2 = new User("evilnamesake");
         userRepository.saveAll(List.of(user1, user2));
         movie1 = new Movie("tt1375666", "Inception");
         movie2 = new Movie("tt2382320", "No Time to Die");
