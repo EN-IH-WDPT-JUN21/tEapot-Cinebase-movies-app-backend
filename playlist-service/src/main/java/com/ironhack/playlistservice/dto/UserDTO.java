@@ -17,13 +17,13 @@ public class UserDTO {
     private String username;
     private String email;
     private String bio;
-    private List<Long> playlists;
+    private Set<PlaylistDTO> playlists;
     private String imageId;
 
     public UserDTO(String email) {
         this.email = email;
         this.bio = "";
         this.username = "";
-        this.playlists = new ArrayList<>();
+        this.playlists = new HashSet<>();
     }
 }
