@@ -119,6 +119,7 @@ class PlaylistControllerTest {
     @Transactional
     void createPlaylist() throws Exception {
         PlaylistDTO playlistDTO = new PlaylistDTO(user1.getId(), "awesome stuff");
+        int initialSize = playlistRepository.findAll().size();
 
         String body = objectMapper.writeValueAsString(playlistDTO);
         MvcResult mvcResult = mockMvc.perform(
@@ -127,7 +128,7 @@ class PlaylistControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated()).andReturn();
 
-        assertEquals(3, playlistRepository.findAll().size());
+        assertEquals(initialSize + 1, playlistRepository.findAll().size());
     }
 
     @Test

@@ -85,7 +85,6 @@ public class PlaylistService {
         if (playlistDTO.getUserId() == null || playlistDTO.getUserId() < 1) {
             playlistDTO.setUserId(user.get().getId());
         }
-        playlistRepository.save(dtoToDao(playlistDTO));
         user.get().getPlaylists().add(playlistRepository.save(dtoToDao(playlistDTO)));
         userRepository.save(user.get());
     }

@@ -35,7 +35,7 @@ public class User {
     private String bio;
 
     @JoinColumn(name = "playlists")
-    @ManyToMany
+    @OneToMany
     private Set<Playlist> playlists;
     public User(String email) {
         this.email = email;
