@@ -139,7 +139,7 @@ class PlaylistControllerTest {
         movieDTO.setTitle("Pulp Fiction");
 
         String body = objectMapper.writeValueAsString(movieDTO);
-        MvcResult mvcResult = mockMvc.perform(patch("/api/playlist/" + playlist1.getId().toString())
+        MvcResult mvcResult = mockMvc.perform(put("/api/playlist/" + playlist1.getId().toString())
                 .content(body)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
